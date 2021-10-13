@@ -1,3 +1,6 @@
 module.exports = {
-  reactStrictMode: true,
+  
+  env: {
+    "dbpwd": "SACyf3nn9MKfxkuL",
+  }
 }
