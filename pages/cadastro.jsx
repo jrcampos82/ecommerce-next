@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import Link from 'next/Link'
+import Link from 'next/link'
 
 const cadastro = () => {
   return (
@@ -10,7 +10,7 @@ const cadastro = () => {
       </Head>
       <form className="mx-auto my-4" style={{ maxWidth: '500px' }}>
         <div className="mb-3">
-          <label for="exampleInputEmail1" className="form-label">
+          <label htmlFor="exampleInputEmail1" className="form-label">
             Nome
           </label>
           <input
@@ -24,7 +24,7 @@ const cadastro = () => {
         </div>
 
         <div className="mb-3">
-          <label for="exampleInputEmail1" className="form-label">
+          <label htmlFor="exampleInputEmail1" className="form-label">
             Email
           </label>
           <input

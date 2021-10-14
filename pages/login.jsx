@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import Link from 'next/Link'
+import Link from 'next/link'
 
 const login = () => {
   return (
@@ -10,7 +10,7 @@ const login = () => {
       </Head>
       <form className="mx-auto my-4" style={{ maxWidth: '500px' }}>
         <div className="mb-3">
-          <label for="exampleInputEmail1" className="form-label">
+          <label htmlFor="exampleInputEmail1" className="form-label">
             Email
           </label>
           <input
@@ -23,7 +23,7 @@ const login = () => {
           <div id="emailHelp" className="form-text"></div>
         </div>
         <div className="mb-3">
-          <label for="exampleInputPassword1" className="form-label">
+          <label htmlFor="exampleInputPassword1" className="form-label">
             Password
           </label>
           <input
@@ -39,8 +39,8 @@ const login = () => {
             className="form-check-input"
             id="exampleCheck1"
           />
-          <label className="form-check-label" for="exampleCheck1">
-            Manter conectado!
+          <label className="form-check-label" htmlFor="exampleCheck1">
+            Mantenha-me conectado!
           </label>
         </div>
         <button type="submit" className="btn btn-primary w-100">

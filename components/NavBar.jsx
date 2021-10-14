@@ -28,14 +28,14 @@ function NavBar() {
             <li className="nav-item">
               <Link href="/car">
                 <a className="nav-link active" aria-current="page">
-                  <i class="fas fa-shopping-cart"></i> Carrinho
+                  <i className="fas fa-shopping-cart"></i> Carrinho
                 </a>
               </Link>
             </li>
             <li className="nav-item">
               <Link href="/login">
                 <a className="nav-link" href="#">
-                  <i class="fas fa-user"></i> Login
+                  <i className="fas fa-user"></i> Login
                 </a>
               </Link>
             </li>
