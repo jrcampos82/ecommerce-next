@@ -1,11 +1,12 @@
 const validate = (nome, email, password, cf_password) => {
 
+    
     if(!nome || !email || !password || !cf_password) {
         return "Todos os campos devem ser preenchidos!";
     }
 
     if (!validateEmail(email)){
-        return "email inválido!"
+        return "E-mail inválido!"
     }
 
     if (password.length <= 6){

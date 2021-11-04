@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import validate from '../utils/validate'
+import { DataContext } from '../store/GlobalState'
 
 const cadastro = () => {
   const initialValue = { nome: '', email: '', password: '', cf_password: '' }
@@ -11,18 +12,23 @@ const cadastro = () => {
 
   const { nome, email, password, cf_password } = userData
 
+  const { state, dispatch } = useContext(DataContext)
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setUserData({ ...userData, [name]: value })
+    dispatch({ type: 'NOTIFY', payload: {} })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const errMsg = validate(nome, email, password, cf_password)
 
-    if (errMsg) {
-      console.log(errMsg)
-    }
+    if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
+
+
+    return dispatch({ type: 'NOTIFY', payload: { success: true } })
+
   }
 
   return (
