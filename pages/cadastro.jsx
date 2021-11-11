@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import validate from '../utils/validate'
 import { DataContext } from '../store/GlobalState'
+import { postData } from '../utils/fetchData'
 
 const cadastro = () => {
   const initialValue = { nome: '', email: '', password: '', cf_password: '' }
@@ -20,15 +21,22 @@ const cadastro = () => {
     dispatch({ type: 'NOTIFY', payload: {} })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errMsg = validate(nome, email, password, cf_password)
 
     if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
 
+    dispatch({ type: 'NOTIFY', payload: { loading: true } })
+
+    const res = await postData('auth/registro', userData)
+
+    if (res.error)
+      return dispatch({ type: 'NOTIFY', payload: { error: res.error } })
+
+    console.log(res)
 
     return dispatch({ type: 'NOTIFY', payload: { success: true } })
-
   }
 
   return (
