@@ -34,7 +34,7 @@ const register = async(req, res) => {
         })
 
         console.log(newUser)
-        // await newUser.save()
+        await newUser.save()
         res.json({msg: "Usuário registrado!"})
 
     } catch (err) {

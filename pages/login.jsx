@@ -1,14 +1,62 @@
-import React from 'react'
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useState, useContext } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { DataContext } from '../store/GlobalState'
+import { postData } from '../utils/fetchData'
+import Cookie from 'js-cookie'
 
 const login = () => {
+  const initialValue = { email: '', password: '' }
+
+  const [userData, setUserData] = useState(initialValue)
+
+  const { email, password } = userData
+
+  const { state, dispatch } = useContext(DataContext)
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setUserData({ ...userData, [name]: value })
+    dispatch({ type: 'NOTIFY', payload: {} })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    dispatch({ type: 'NOTIFY', payload: { loading: true } })
+
+    const res = await postData('auth/login', userData)
+
+    if (res.err)
+      return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+
+    dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+
+    dispatch({
+      type: 'AUTH',
+      payload: {
+        token: res.access_token,
+        user: res.user,
+      },
+    })
+
+    Cookie.set('refreshtoken', res.refresh_token, {
+      path: 'api/auth/accessToken',
+      expires: 7,
+    })
+  }
+
   return (
     <div>
       <Head>
         <title>Login</title>
       </Head>
-      <form className="mx-auto my-4" style={{ maxWidth: '500px' }}>
+      <form
+        className="mx-auto my-4"
+        style={{ maxWidth: '500px' }}
+        onSubmit={handleSubmit}
+      >
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
             Email
@@ -19,6 +67,9 @@ const login = () => {
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             placeholder="email@email.com"
+            name="email"
+            value={email}
+            onChange={handleInputChange}
           />
           <div id="emailHelp" className="form-text"></div>
         </div>
@@ -31,6 +82,9 @@ const login = () => {
             className="form-control"
             id="exampleInputPassword1"
             placeholder="********"
+            name="password"
+            value={password}
+            onChange={handleInputChange}
           />
         </div>
         <div className="mb-3 form-check">
