@@ -24,6 +24,7 @@ const register = async(req, res) => {
         const {nome, email, password, cf_password } = req.body
         const errMsg = validar(nome, email, password, cf_password)
 
+        
         if(errMsg) return res.status(400).json({err: errMsg})
 
         const passwordHash = await bcrypt.hash(password, 12)
