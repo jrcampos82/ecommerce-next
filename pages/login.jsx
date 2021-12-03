@@ -1,19 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { DataContext } from '../store/GlobalState'
 import { postData } from '../utils/fetchData'
 import Cookie from 'js-cookie'
+import { useRouter } from 'next/router'
 
 const login = () => {
   const initialValue = { email: '', password: '' }
-
   const [userData, setUserData] = useState(initialValue)
-
   const { email, password } = userData
 
   const { state, dispatch } = useContext(DataContext)
+  const { auth } = state
+
+  const router = useRouter()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -25,7 +28,6 @@ const login = () => {
     e.preventDefault()
 
     dispatch({ type: 'NOTIFY', payload: { loading: true } })
-
     const res = await postData('auth/login', userData)
 
     if (res.err)
@@ -45,7 +47,13 @@ const login = () => {
       path: 'api/auth/accessToken',
       expires: 7,
     })
+
+    localStorage.setItem('primeiroLogin', true)
   }
+
+  useEffect(() => {
+    if (Object.keys(auth).length !== 0) router.push('/')
+  }, [auth])
 
   return (
     <div>
@@ -58,20 +66,18 @@ const login = () => {
         onSubmit={handleSubmit}
       >
         <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
+          <label htmlFor="inputEmail" className="form-label">
             Email
           </label>
           <input
             type="email"
             className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
+            id="inputEmail"
             placeholder="email@email.com"
             name="email"
             value={email}
             onChange={handleInputChange}
           />
-          <div id="emailHelp" className="form-text"></div>
         </div>
         <div className="mb-3">
           <label htmlFor="exampleInputPassword1" className="form-label">
@@ -87,7 +93,7 @@ const login = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="mb-3 form-check">
+        {/* <div className="mb-3 form-check">
           <input
             type="checkbox"
             className="form-check-input"
@@ -96,7 +102,7 @@ const login = () => {
           <label className="form-check-label" htmlFor="exampleCheck1">
             Mantenha-me conectado!
           </label>
-        </div>
+        </div> */}
         <button type="submit" className="btn btn-primary w-100">
           Login
         </button>

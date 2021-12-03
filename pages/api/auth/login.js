@@ -1,55 +1,46 @@
 /* eslint-disable import/no-anonymous-default-export */
-
 import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
-import validar from '../../../utils/validate'
 import bcrypt from 'bcrypt'
 import { createAccessToken, createRefreshToken } from '../../../utils/generateToken'
 
+
 connectDB()
 
-export default async(req, res) => {
-    switch(req.method) {
+export default async (req, res) => {
+    switch(req.method){
         case "POST":
             await login(req, res)
-            break
-        case "GET":
-            console.log("get")
-            break
+            break;
     }
 }
 
-const login = async(req, res) => {
-    try {
-        const {email, password } = req.body
-
+const login = async (req, res) => {
+    try{
+        const { email, password } = req.body
+        
         const user = await Users.findOne({ email })
-        if (!user) return res.status(400).json({err: 'Usuário não existe!'})
+        if(!user) return res.status(400).json({err: 'Usuário não existe.'})
 
-        const verPwd = await bcrypt.compare(password, user.password)
-        if (!verPwd) return res.status(400).json({err: 'Password Incorreto!'})
+        const isMatch = await bcrypt.compare(password, user.password)
+        if(!isMatch) return res.status(400).json({err: 'Senha incorreta!.'})
 
-        const access_token = createAccessToken({_id: user._id})
-        const refresh_token = createRefreshToken({_id: user._id})
-
-
+        const access_token = createAccessToken({id: user._id})
+        const refresh_token = createRefreshToken({id: user._id})
+        
         res.json({
-            msg: "Login Success",
+            msg: "Login Success!",
             refresh_token,
             access_token,
             user: {
                 name: user.name,
-                email: user.email, 
-                role: user.role,
+                email: user.email,
+                role: user.role,                
                 root: user.root
             }
         })
-        
 
-    } catch (err) {
-        res.status(500).json({err: err.message});
+    }catch(err){
+        return res.status(500).json({err: err.message})
     }
 }
-
-
-

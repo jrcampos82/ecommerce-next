@@ -1,7 +1,49 @@
+import { useContext } from 'react'
 import React from 'react'
+import { useRouter } from 'next/router'
+import { DataContext } from '../store/GlobalState'
 import Link from 'next/link'
 
 function NavBar() {
+  const router = useRouter()
+  const { state, dispatch } = useContext(DataContext)
+  const { auth } = state
+
+  const handleLogout = () => {
+    localStorage.removeItem('primeiroLogin')
+  }
+
+  const logout = () => {
+    return (
+      <li className="nav-item dropdown">
+        <a
+          className="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {auth.user.nome}
+        </a>
+        <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <a className="dropdown-item" href="#">
+              Profile
+            </a>
+          </li>
+          <li>
+            {/* <a className="dropdown-item" href="#"> */}
+            <button className="dropdown-item" onClick={handleLogout}>
+              Logout
+            </button>
+            {/* </a> */}
+          </li>
+        </ul>
+      </li>
+    )
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -32,50 +74,18 @@ function NavBar() {
                 </a>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link href="/login">
-                <a className="nav-link" href="#">
-                  <i className="fas fa-user"></i> Login
-                </a>
-              </Link>
-            </li>
-            {/* <li className="nav-item">
-              <a className="nav-link" href="#">
-                Pricing
-              </a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownMenuLink"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown link
-              </a>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Action
+
+            {Object.keys(auth).length === 0 ? (
+              <li className="nav-item">
+                <Link href="/login">
+                  <a className="nav-link" href="#">
+                    <i className="fas fa-user"></i> Login
                   </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Another action
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Something else here
-                  </a>
-                </li>
-              </ul>
-            </li> */}
+                </Link>
+              </li>
+            ) : (
+              logout()
+            )}
           </ul>
         </div>
       </div>

@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import validate from '../utils/validate'
 import { DataContext } from '../store/GlobalState'
 import { postData } from '../utils/fetchData'
+import { useRouter } from 'next/router'
 
 const cadastro = () => {
   const initialValue = { nome: '', email: '', password: '', cf_password: '' }
@@ -14,6 +15,10 @@ const cadastro = () => {
   const { nome, email, password, cf_password } = userData
 
   const { state, dispatch } = useContext(DataContext)
+  const { auth } = state
+  const router = useRouter()
+
+  //useForm
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -38,6 +43,10 @@ const cadastro = () => {
 
     return dispatch({ type: 'NOTIFY', payload: { success: true } })
   }
+
+  useEffect(() => {
+    if (Object.keys(auth).length !== 0) router.push('/')
+  }, [auth])
 
   return (
     <div>

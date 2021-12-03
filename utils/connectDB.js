@@ -1,19 +1,18 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const connectDB = () => {
     if(mongoose.connections[0].readyState){
-        console.log('Conexão já existe.')
-        return
+        console.log('Already connected.')
+        return;
     }
-
     mongoose.connect(process.env.MONGODB_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
+      useNewUrlParser: true, 
+      useUnifiedTopology: true 
     }, err => {
         if(err) throw err;
-        console.log("Conectado ao mongodb!")
+        console.log('Connected to mongodb.')
     })
-
 }
 
-export default connectDB;
+
+export default connectDB
