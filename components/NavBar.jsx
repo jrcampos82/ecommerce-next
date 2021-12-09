@@ -7,7 +7,7 @@ import Link from 'next/link'
 function NavBar() {
   const router = useRouter()
   const { state, dispatch } = useContext(DataContext)
-  const { auth } = state
+  const { auth, cart } = state
 
   const handleLogout = () => {
     localStorage.removeItem('primeiroLogin')
@@ -70,7 +70,22 @@ function NavBar() {
             <li className="nav-item">
               <Link href="/car">
                 <a className="nav-link active" aria-current="page">
-                  <i className="fas fa-shopping-cart"></i> Carrinho
+                  <i className="fas fa-shopping-cart position-relative">
+                    <span
+                      className="position-absolute"
+                      style={{
+                        padding: '3px 6px',
+                        background: '#ed143dc2',
+                        borderRadius: '50%',
+                        top: '-10px',
+                        right: '-10px',
+                        color: 'white',
+                        fontSize: '14px',
+                      }}
+                    >
+                      {cart.length}
+                    </span>
+                  </i>
                 </a>
               </Link>
             </li>

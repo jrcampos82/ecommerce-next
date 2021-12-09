@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 import { DataContext } from '../../store/GlobalState'
+import { addToCart } from '../../store/Action'
 import Link from 'next/link'
 /* eslint-disable @next/next/no-img-element */
 
 const ProductItem = ({ product, handleCheck }) => {
   const { state, dispatch } = useContext(DataContext)
-  const { auth } = state
+  const { auth, cart } = state
   const { _id, inStock, checked, images, title, description, price } = product
   const userLink = () => {
     return (
